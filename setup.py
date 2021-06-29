@@ -9,7 +9,7 @@ setup(
     description='project describe',  # 描述
     author='George',  # 作者
     author_email='xxx@qq.com',  # 你的邮箱**
-    url='',  # 可以写github上的地址，或者其他地址
+    url='https://www.python.org/',  # 可以写github上的地址，或者其他地址
     packages=setuptools.find_packages(exclude=['examples']),  # 包内不需要引用的文件夹
 
     # 依赖包
