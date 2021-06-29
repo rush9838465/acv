@@ -20,3 +20,4 @@ def resize_padding(img, dst_hw=[64, 164]):
     ry, rx = int((dst_hw[0] - align_H) / 2), int((dst_hw[1] - align_W) / 2)
     img_paded[ry:align_H + ry, rx:align_W + rx, :] = img_resized
     return img_paded
+
