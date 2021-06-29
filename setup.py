@@ -15,7 +15,7 @@ setup(
     # 依赖包
     install_requires=[
         'numpy',
-        'cv2',
+        'opencv-python',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
