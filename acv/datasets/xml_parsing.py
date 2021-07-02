@@ -33,10 +33,10 @@ class VOC:
         return anno
 
     @staticmethod
-    def get_iou_from_xml(files_path, images_path, label_care=[''], debug=True, img_type='.jpg'):
+    def get_roi_from_xml(files_path, images_path, label_care=[''], debug=True, img_type='.jpg'):
         """
         :param file_path: xml files path
-        :return: save files to ./iou_results
+        :return: save files to ./roi_results
         """
         xmls = os.listdir(files_path)
 
@@ -47,8 +47,8 @@ class VOC:
             root = xl.getroot()
             objects = root.findall('object')
             img = cv2.imread(os.path.join(images_path, one.replace('.xml', img_type)),)
-            if not os.path.exists('./iou_results'):
-                os.mkdir("./iou_results")
+            if not os.path.exists('./roi_results'):
+                os.mkdir("./roi_results")
 
             for idx, ob in enumerate(objects):
                 one_annotation = {}
@@ -62,14 +62,14 @@ class VOC:
                 ymin = int(bbox.find('ymin').text)
                 xmax = int(bbox.find('xmax').text)
                 ymax = int(bbox.find('ymax').text)
-                cv2.imwrite(f"./iou_results/{one[:-4]}_{idx}.jpg", img[ymin:ymax, xmin:xmax])
+                cv2.imwrite(f"./roi_results/{one[:-4]}_{idx}.jpg", img[ymin:ymax, xmin:xmax])
                 if debug:
-                    print(f"./iou_results/{one[:-4]}_{idx}.jpg: ", idx)
+                    print(f"./roi_results/{one[:-4]}_{idx}.jpg: ", idx)
 
 
 if __name__ == '__main__':
-    VOC.get_iou_from_xml(r'C:\Users\98384\Desktop\Desktop',
+    VOC.get_roi_from_xml(r'C:\Users\98384\Desktop\Desktop',
                          r'C:\Users\98384\Desktop\Desktop',
-                         label_care=['HDPY'],
+                         label_care=['cat', 'dog'],
                          debug=True,
                          img_type='.jpg')

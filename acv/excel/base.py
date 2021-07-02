@@ -99,6 +99,6 @@ class Excel:
 if __name__ == '__main__':
     e = Excel()
     e.open("./empty.xlsx", 'Sheet2')
-    e.set_value('A', 2, 'zhouhe')
+    e.set_value('A', 2, '1')
     e.set_value('A', 3, '778')
     e.save('./new_.xlsx')
