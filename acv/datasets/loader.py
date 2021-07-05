@@ -1,6 +1,6 @@
 import os
 import cv2
-from .xml_parsing import VOC as xpVOC
+from acv.datasets.xml_parsing import VOC as xpVOC
 from torch.utils.data import Dataset
 
 
@@ -20,7 +20,7 @@ class VOC(Dataset):
         # self.images_files = os.listdir(images_path)
         self.preload2memory = preload2memory
         self.preprocess = preprocess
-        self.images_path = image_type
+        self.image_type = image_type
 
         self.xmls = []
         if self.preload2memory:
@@ -30,7 +30,7 @@ class VOC(Dataset):
             print("end load!")
 
     def __getitem__(self, item):
-        img = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.images_path)))
+        img = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
         if self.preload2memory:
             label = self.xmls[item]
         else:
@@ -45,4 +45,8 @@ class VOC(Dataset):
 
 if __name__ == '__main__':
     voc = VOC(r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\Annotations',
-              r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\JPEGImages', )
+              r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\JPEGImages',
+              preload2memory=False)
+    for i, l in voc:
+        print(i)
+        print(l)
