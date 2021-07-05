@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 
 class VOC(Dataset):
-    def __init__(self, xml_path, images_path, preprocess=None, preload2memory=True, image_type='.jpg'):
+    def __init__(self, xml_path, images_path, preprocess=None, preload2memory=True, image_type='.jpg', origin_image=False):
         """
         :param xml_path: xml files path.
         :param images_path: image files path.
@@ -21,6 +21,7 @@ class VOC(Dataset):
         self.preload2memory = preload2memory
         self.preprocess = preprocess
         self.image_type = image_type
+        self.origin_image = origin_image
 
         self.xmls = []
         if self.preload2memory:
@@ -29,17 +30,17 @@ class VOC(Dataset):
                 self.xmls.append(xpVOC.xml2jsonOfbbox(os.path.join(xml_path, one)))
             print("end load!")
 
-    def __getitem__(self, item, imgOri=False):
+    def __getitem__(self, item):
         img_ori = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
         if self.preload2memory:
             label = self.xmls[item]
         else:
             label = xpVOC.xml2jsonOfbbox(os.path.join(self.xml_path, self.xml_files[item]))
         if self.preprocess:
-            img, label = self.preprocess(img_ori, label)
+            img, label = self.preprocess(img_ori.copy(), label)
         else:
             img = img_ori
-        if imgOri:
+        if self.origin_image:
             return img, label, img_ori
         return img, label
 
