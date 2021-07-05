@@ -5,10 +5,11 @@ from torch.utils.data import Dataset
 
 
 class VOC(Dataset):
-    def __init__(self, xml_path, images_path, preprocess=None, preload2memory=True, image_type='.jpg', origin_image=False):
+    def __init__(self, xml_path, images_path, label_id=None, preprocess=None, preload2memory=True, image_type='.jpg', origin_image=False):
         """
         :param xml_path: xml files path.
         :param images_path: image files path.
+        :param label_id: if not None, label return [xmin, ymin, xmax, ymax, 1, label_id]. e.g: {'cat':0,'dog':1}
         :param preprocess: preprocess function hook,
          that need 2 parameters image(result from cv2.imread()) and label({'tag':'cat', 'bbox':[xmin, ymin, xmax, ymax]}).
         :param preload2memory: preload xml files to memory.
@@ -22,6 +23,7 @@ class VOC(Dataset):
         self.preprocess = preprocess
         self.image_type = image_type
         self.origin_image = origin_image
+        self.label_id = label_id
 
         self.xmls = []
         if self.preload2memory:
@@ -34,8 +36,16 @@ class VOC(Dataset):
         img_ori = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
         if self.preload2memory:
             label = self.xmls[item]
+            new_label = []
+            if self.label_id is not None:
+                for one_label in label:
+                    new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
         else:
             label = xpVOC.xml2jsonOfbbox(os.path.join(self.xml_path, self.xml_files[item]))
+            new_label = []
+            if self.label_id is not None:
+                for one_label in label:
+                    new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
         if self.preprocess:
             img, label = self.preprocess(img_ori.copy(), label)
         else:
