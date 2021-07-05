@@ -5,3 +5,5 @@ __version__ = "1.0"
 
 # 可外部调用的包的函数
 from .xml_parsing import *
+from .loader import *
+from .voc2yolo import *
