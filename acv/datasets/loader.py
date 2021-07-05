@@ -29,14 +29,18 @@ class VOC(Dataset):
                 self.xmls.append(xpVOC.xml2jsonOfbbox(os.path.join(xml_path, one)))
             print("end load!")
 
-    def __getitem__(self, item):
-        img = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
+    def __getitem__(self, item, imgOri=False):
+        img_ori = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
         if self.preload2memory:
             label = self.xmls[item]
         else:
             label = xpVOC.xml2jsonOfbbox(os.path.join(self.xml_path, self.xml_files[item]))
         if self.preprocess:
-            img, label = self.preprocess(img, label)
+            img, label = self.preprocess(img_ori, label)
+        else:
+            img = img_ori
+        if imgOri:
+            return img, label, img_ori
         return img, label
 
     def __len__(self):
