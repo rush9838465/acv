@@ -41,12 +41,14 @@ class VOC(Dataset):
             if self.label_id is not None:
                 for one_label in label:
                     new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
+                label = new_label
         else:
             label = xpVOC.xml2jsonOfbbox(os.path.join(self.xml_path, self.xml_files[item]))
             new_label = []
             if self.label_id is not None:
                 for one_label in label:
                     new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
+                label = new_label
         if self.preprocess:
             img, label = self.preprocess(img_ori.copy(), label)
         else:
