@@ -1,5 +1,7 @@
 import os
 import cv2
+import numpy as np
+
 from acv.datasets.xml_parsing import VOC as xpVOC
 from torch.utils.data import Dataset
 
@@ -42,10 +44,8 @@ class VOC(Dataset):
         if self.label_id is not None:
             new_label = []
             for one_label in label:
-                new_label.append([one_label['bbox'][0], one_label['bbox'][1],
-                                  one_label['bbox'][2], one_label['bbox'][3],
-                                  1, self.label_id[one_label['tag']]])
-            label = new_label
+                new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
+            label = np.array(new_label)
         if self.preprocess:
             img, label = self.preprocess(img_ori.copy(), label)
         else:
