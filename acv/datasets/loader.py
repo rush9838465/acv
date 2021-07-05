@@ -5,7 +5,8 @@ from torch.utils.data import Dataset
 
 
 class VOC(Dataset):
-    def __init__(self, xml_path, images_path, label_id=None, preprocess=None, preload2memory=True, image_type='.jpg', origin_image=False):
+    def __init__(self, xml_path, images_path, label_id=None, preprocess=None, preload2memory=True, image_type='.jpg',
+                 origin_image=False):
         """
         :param xml_path: xml files path.
         :param images_path: image files path.
@@ -59,9 +60,18 @@ class VOC(Dataset):
 
 
 if __name__ == '__main__':
+    def my_preprocess(img, label):
+        pass
+        return img, label
+
+
     voc = VOC(r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\Annotations',
               r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\JPEGImages',
-              preload2memory=False)
+              preload2memory=False,
+              preprocess=my_preprocess,
+              origin_image=True,
+              label_id={'person': 0, 'hat': 1}
+              )
     for i, l in voc:
         print(i)
         print(l)
