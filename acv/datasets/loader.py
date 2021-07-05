@@ -1,9 +1,10 @@
 import os
 import cv2
 from .xml_parsing import VOC as xpVOC
+from torch.utils.data import Dataset
 
 
-class VOC:
+class VOC(Dataset):
     def __init__(self, xml_path, images_path, preprocess=None, preload2memory=True, image_type='.jpg'):
         """
         :param xml_path: xml files path.
@@ -23,8 +24,10 @@ class VOC:
 
         self.xmls = []
         if self.preload2memory:
+            print("start load xml files...")
             for one in self.xml_files:
                 self.xmls.append(xpVOC.xml2jsonOfbbox(os.path.join(xml_path, one)))
+            print("end load!")
 
     def __getitem__(self, item):
         img = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.images_path)))
@@ -42,6 +45,4 @@ class VOC:
 
 if __name__ == '__main__':
     voc = VOC(r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\Annotations',
-                  r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\JPEGImages',)
-
-
+              r'\\10.20.200.170\data\ext\PVDefectData\test2021\zh\dt\VOC2028\JPEGImages', )
