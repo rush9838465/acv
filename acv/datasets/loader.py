@@ -37,18 +37,15 @@ class VOC(Dataset):
         img_ori = cv2.imread(os.path.join(self.images_path, self.xml_files[item].replace('.xml', self.image_type)))
         if self.preload2memory:
             label = self.xmls[item]
-            new_label = []
-            if self.label_id is not None:
-                for one_label in label:
-                    new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
-                label = new_label
         else:
             label = xpVOC.xml2jsonOfbbox(os.path.join(self.xml_path, self.xml_files[item]))
+        if self.label_id is not None:
             new_label = []
-            if self.label_id is not None:
-                for one_label in label:
-                    new_label.append([*one_label['bbox'], 1, self.label_id[one_label['tag']]])
-                label = new_label
+            for one_label in label:
+                new_label.append([one_label['bbox'][0], one_label['bbox'][1],
+                                  one_label['bbox'][2], one_label['bbox'][3],
+                                  1, self.label_id[one_label['tag']]])
+            label = new_label
         if self.preprocess:
             img, label = self.preprocess(img_ori.copy(), label)
         else:
@@ -74,6 +71,6 @@ if __name__ == '__main__':
               origin_image=True,
               label_id={'person': 0, 'hat': 1}
               )
-    for i, l in voc:
+    for i, l, o in voc:
         print(i)
         print(l)
