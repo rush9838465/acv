@@ -22,7 +22,6 @@ class VOC:
                 if label not in label_care:
                     continue
             one_annotation['tag'] = label
-            one_annotation['flag'] = False
             bbox = ob.find('bndbox')
             xmin = int(bbox.find('xmin').text)
             ymin = int(bbox.find('ymin').text)

@@ -15,4 +15,7 @@ pip install git+https://github.com/rush9838465/acv
 
     添加excel解析：读写excel文件
     调用位置： acv.excel.base.py
+
+2021/7/5:
     
+    添加数据集加载（支持torch DataLoader）：VOC数据集格式
