@@ -19,3 +19,8 @@ pip install git+https://github.com/rush9838465/acv
 2021/7/5:
     
     添加数据集加载（支持torch DataLoader）：VOC数据集格式
+
+2021/7/26:
+    
+    添加优化器：余弦退火 SGD版本
+
