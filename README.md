@@ -24,3 +24,9 @@ pip install git+https://github.com/rush9838465/acv
     
     添加优化器：余弦退火 SGD版本
 
+2021/8/20:
+    
+    添加特征层可视化：feature_map_visualization.py
+    功能介绍博客：
+    https://blog.csdn.net/rush9838465/article/details/114291144
+
